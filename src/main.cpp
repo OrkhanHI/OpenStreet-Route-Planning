@@ -30,6 +30,11 @@ static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
     return std::move(contents);
 }
 
+bool checkRange(int user_input_x, int user_input_y){
+    //check here if the input is in the range [0, 100]
+    return (0 <= user_input_x && user_input_x <= 100) && (0 <= user_input_y && user_input_y <= 100); 
+}
+
 int main(int argc, const char **argv)
 {    
     std::string osm_data_file = "";
@@ -55,19 +60,24 @@ int main(int argc, const char **argv)
             osm_data = std::move(*data);
     }
     
-    // TODO 1: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
-    // user input for these values using std::cin. Pass the user input to the
-    // RoutePlanner object below in place of 10, 10, 90, 90.
+    //Enter start and end coordinates
     float start_x, start_y, end_x, end_y;
-    cout << "Enter start_x coordinate: " << std::endl;
-    cin >> start_x;
-    cout << "Enter start_y coordinate: " << std::endl;
-    cin >> start_y;
-    cout << "Enter end_x coordinate: " << std::endl;
-    cin >> end_x;
-    cout << "Enter end_y coordinate: " << std::endl;
-    cin >> end_y;
-
+    while (true){
+        cout << "Enter start_x coordinate: " << std::endl;
+        cin >> start_x;
+        cout << "Enter start_y coordinate: " << std::endl;
+        cin >> start_y;
+        cout << "Enter end_x coordinate: " << std::endl;
+        cin >> end_x;
+        cout << "Enter end_y coordinate: " << std::endl;
+        cin >> end_y;
+        if(checkRange(start_x, start_y) && checkRange(end_x, end_y)){
+            break;
+        } else {
+            std::cout << "Coordinates values need to be within [0,100]" << "\n";
+            continue;
+        }
+    }
 
     // Build Model.
     RouteModel model{osm_data};
